@@ -46,9 +46,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function statuses()
+    {
+        return $this->hasMany(Status::class);
+    }
+
     public function gravatar($size = '100')
     {
         $hash = md5(strtolower(trim($this->attributes['email'])));
         return "http://www.gravatar.com/avatar/$hash?s=$size";
+    }
+
+    public function feed()
+    {
+        return $this->statuses()->orderBy('created_at','desc');
     }
 }
